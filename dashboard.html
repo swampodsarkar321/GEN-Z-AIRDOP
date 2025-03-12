@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEN Z - Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f9; margin: 0; padding: 0; }
+        .header { background: #004d40; padding: 20px 0; color: white; text-align: center; font-size: 28px; font-weight: bold; position: relative; }
+        .username { position: absolute; top: 20px; right: 30px; font-size: 18px; color: #fff; font-weight: bold; }
+        .container { padding: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; padding: 25px; margin: 15px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); width: 48%; }
+        .card h3 { font-size: 22px; margin-bottom: 15px; color: #004d40; }
+        .stat { font-size: 24px; color: #004d40; font-weight: bold; }
+        .progress-bar { width: 100%; background: #ddd; height: 8px; margin: 20px 0; border-radius: 5px; }
+        .progress { height: 100%; background: #00796b; border-radius: 5px; }
+        .footer { text-align: center; margin-top: 20px; padding: 10px; background: #004d40; color: white; font-size: 16px; }
+        .network-quality { font-size: 18px; color: #004d40; }
+        .status-text { font-size: 16px; color: #00796b; margin-top: 10px; }
+        .chart-container { width: 100%; height: 350px; margin-top: 20px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js for 3D Graph -->
+</head>
+<body>
+
+    <div class="header">
+        GEN Z Airdrop - Dashboard
+        <div class="username" id="username">Loading...</div>
+    </div>
+
+    <div class="container">
+        <!-- Earnings Card -->
+        <div class="card">
+            <h3>Epoch Earnings</h3>
+            <p class="stat" id="earnings">0.00</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <p>Status: <span id="miningStatus">Inactive</span></p>
+        </div>
+
+        <!-- Network Quality Card -->
+        <div class="card">
+            <h3>Network Quality</h3>
+            <p class="stat" id="network">75%</p>
+            <div class="progress-bar">
+                <div class="progress" id="networkProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings 3D Graph -->
+    <div class="chart-container">
+        <canvas id="earningsChart"></canvas>
+    </div>
+
+    <div class="footer">
+        © 2025 GEN Z Airdrop | Powered by GEN Z Network
+    </div>
+
+    <script>
+        // Retrieve the saved username from localStorage
+        const username = localStorage.getItem('username') || "Guest";  // Default to "Guest" if no username exists
+        document.getElementById("username").innerText = `User: ${username}`;
+
+        // Mining Data Update Function
+        let earnings = parseFloat(localStorage.getItem('earnings')) || 0;
+        const earningsDisplay = document.getElementById("earnings");
+        const progressBar = document.getElementById("progress");
+        const networkStatus = document.getElementById("network");
+        const networkProgress = document.getElementById("networkProgress");
+        const miningStatusDisplay = document.getElementById("miningStatus");
+
+        // Chart.js setup for the earnings graph
+        const ctx = document.getElementById('earningsChart').getContext('2d');
+        const earningsChart = new Chart(ctx, {
+            type: 'line',  // Line graph for earnings over time
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Earnings Over Time',
+                    data: [],
+                    borderColor: 'rgba(0, 128, 128, 1)',
+                    backgroundColor: 'rgba(0, 128, 128, 0.2)',
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        min: 0,
+                        max: 500,
+                        ticks: { stepSize: 50 }
+                    }
+                }
+            }
+        });
+
+        // Update the earnings and progress bar
+        earningsDisplay.innerText = earnings.toFixed(2);
+        progressBar.style.width = `${Math.min(earnings / 1000 * 100, 100)}%`; 
+
+        // Simulating a dynamic network quality change
+        let networkQuality = 75;
+        let networkUpdateInterval = setInterval(() => {
+            networkQuality = Math.max(0, networkQuality - Math.random() * 5);
+            networkStatus.innerText = `${networkQuality.toFixed(2)}%`;
+            networkProgress.style.width = `${networkQuality}%`;
+        }, 3000);
+
+        // Handle mining status based on earnings
+        if (earnings > 0) {
+            miningStatusDisplay.innerText = "Active";
+        } else {
+            miningStatusDisplay.innerText = "Inactive";
+        }
+
+        // If mining is active, dynamically update the earnings
+        setInterval(() => {
+            if (earnings > 0) {
+                earnings += Math.random() * 5; // Simulate mining earnings
+                earningsDisplay.innerText = earnings.toFixed(2);
+                progressBar.style.width = `${Math.min(earnings / 1000 * 100, 100)}%`;
+                localStorage.setItem('earnings', earnings);
+                miningStatusDisplay.innerText = "Active";
+
+                // Update the chart with new earnings
+                earningsChart.data.labels.push(Date.now());  // Push current time to x-axis labels
+                earningsChart.data.datasets[0].data.push(earnings);  // Push earnings to y-axis
+                earningsChart.update();  // Update the chart
+            }
+        }, 1000);  // Update earnings every 1 second
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEN Z AIRDROP</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0fff0; text-align: center; }
+        .container { background: white; width: 300px; margin: 50px auto; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }
+        .power-button { font-size: 24px; background: green; color: white; border: none; padding: 10px; border-radius: 50%; cursor: pointer; }
+        .earn-on-x, .copy-button, .desktop-dashboard { display: block; margin: 10px auto; padding: 10px; border: none; border-radius: 5px; cursor: pointer; }
+        .earn-on-x { background: white; border: 1px solid black; }
+        .copy-button { background: green; color: white; }
+        .desktop-dashboard { background: white; border: 1px solid black; }
+        .progress-bar { width: 80%; background: #ddd; height: 10px; margin: 10px auto; border-radius: 5px; overflow: hidden; }
+        .progress { width: 75%; height: 100%; background: green; }
+        .status-text { font-size: 16px; margin-top: 10px; }
+        .username-input { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; margin: 15px auto; display: block; }
+        .username-display { font-size: 18px; color: #004d40; font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GEN Z</h1> 
+        <p class="earnings-label">Epoch Earnings:</p>
+        <h2 id="earnings">0.00</h2>
+
+        <!-- Username Input for Mining -->
+        <input type="text" id="usernameInput" class="username-input" placeholder="Enter your username" />
+
+        <button id="powerBtn" class="power-button">⏻</button>
+        <button class="earn-on-x">🐦 EARN ON X</button>
+
+        <div class="network-quality">Network Quality: <span id="network">75%</span></div>
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+
+        <p class="status-text">You're doing great! Keep connected to this network to earn.</p>
+
+        <button id="copyBtn" class="copy-button">📋 COPY REFERRAL LINK</button>
+        <button class="desktop-dashboard" id="desktopDashboardBtn">➡ Desktop Dashboard</button>
+
+        <!-- Display the entered username -->
+        <p class="username-display" id="usernameDisplay"></p>
+    </div>
+
+    <script>
+        let mining = false;
+        let earnings = parseFloat(localStorage.getItem('earnings')) || 0;
+        const earningsDisplay = document.getElementById("earnings");
+        const powerBtn = document.getElementById("powerBtn");
+        const usernameInput = document.getElementById("usernameInput");
+        const usernameDisplay = document.getElementById("usernameDisplay");
+
+        // Check if it's the user's first visit
+        if(localStorage.getItem('firstVisit') !== 'false') {
+            alert("Welcome to GEN Z Airdrop! Enter your username and click the power button to start mining.");
+            localStorage.setItem('firstVisit', 'false');
+        }
+
+        // Update earnings display from localStorage
+        earningsDisplay.innerText = earnings.toFixed(2);
+
+        // Load saved username from localStorage if it exists
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+            usernameDisplay.innerText = `Welcome back, ${savedUsername}!`;
+        }
+
+        // Start or stop mining when the power button is clicked
+        powerBtn.addEventListener("click", () => {
+            const username = usernameInput.value.trim();
+
+            // Ensure a username is entered
+            if (username === "") {
+                alert("Please enter a username before starting mining.");
+                return;
+            }
+
+            // Store the username in localStorage
+            localStorage.setItem('username', username);
+
+            // Display the entered username
+            usernameDisplay.innerText = `Welcome, ${username}!`;
+
+            mining = !mining;
+            powerBtn.style.background = mining ? "red" : "green";
+            
+            if (mining) {
+                startMining();
+            }
+
+            localStorage.setItem('mining', mining);
+        });
+
+        // Mining process
+        function startMining() {
+            const interval = setInterval(() => {
+                if (!mining) return clearInterval(interval);
+                earnings += Math.random() * 5;
+                earningsDisplay.innerText = earnings.toFixed(2);
+                localStorage.setItem('earnings', earnings);
+            }, 1000);
+        }
+
+        // Copy Referral Link
+        document.getElementById("copyBtn").addEventListener("click", () => {
+            navigator.clipboard.writeText("https://genzairdrop.com/ref123");
+            alert("Referral Link Copied!");
+        });
+
+        // Open Desktop Dashboard
+        document.getElementById("desktopDashboardBtn").addEventListener("click", () => {
+            window.open('dashboard.html', '_blank');
+        });
+    </script>
+</body>
+</html>
